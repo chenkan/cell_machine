@@ -1,4 +1,4 @@
 细胞自动机
 ============
 
-Elementary Cellular Automaton
+请在`终端`中执行本代码以获取良好的视觉效果

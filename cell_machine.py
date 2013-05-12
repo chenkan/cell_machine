@@ -4,6 +4,7 @@ __author__ = 'ChenKan'
 
 import numpy
 import time
+import os
 from termcolor import colored
 
 
@@ -11,8 +12,10 @@ global grid_size
 global grid
 
 
-def cls():
-    print "-------------------------------------"
+# 在终端中执行才会有清屏效果
+def clear_screen():
+    os.system('clear')  # Linux / Mac
+#   os.system('cls')    # Windows
 
 
 # 0 - dead
@@ -100,22 +103,22 @@ def calculate_neighbor_alive_num(i, j):
 
 def print_grid():
     global grid_size, grid
+    clear_screen()
 
     for i in range(0, grid_size):
         for j in range(0, grid_size):
             if grid[i, j] == 1:
                 print colored('x', 'red'),
             else:
-                print colored('.', 'grey'),
+                print colored('.', 'white'),
         print ""
-    cls()
 
 
 def main():
     init_grid()
     print_grid()
-    for i in range(1, 40):
-        time.sleep(0.25)
+    for i in range(1, 100):
+        time.sleep(0.1)
         update_grid()
         print_grid()
     else:
