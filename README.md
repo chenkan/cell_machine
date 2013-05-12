@@ -1,4 +1,4 @@
-cell_machine
+细胞自动机
 ============
 
 Elementary Cellular Automaton
