@@ -4,7 +4,7 @@ __author__ = 'ChenKan'
 
 import numpy
 import time
-# import os
+from termcolor import colored
 
 
 global grid_size
@@ -12,9 +12,7 @@ global grid
 
 
 def cls():
-    # os.system(['clear', 'cls'][os.name == 'nt'])
-    print "\n" * 1
-    # print 1
+    print "-------------------------------------"
 
 
 # 0 - dead
@@ -22,10 +20,13 @@ def cls():
 def init_grid():
     global grid_size, grid
 
-    grid_size = 10
+    grid_size = 25
     grid = numpy.zeros((grid_size, grid_size))
-    grid[9] = 1
-    print grid.__class__
+    grid[2, 3] = 1  # 爬行模式
+    grid[4, 2] = 1
+    grid[3, 3] = 1
+    grid[3, 2] = 1
+    grid[2, 1] = 1
 
 
 def update_grid():
@@ -100,15 +101,21 @@ def calculate_neighbor_alive_num(i, j):
 def print_grid():
     global grid_size, grid
 
+    for i in range(0, grid_size):
+        for j in range(0, grid_size):
+            if grid[i, j] == 1:
+                print colored('x', 'red'),
+            else:
+                print colored('.', 'grey'),
+        print ""
     cls()
-    print grid
 
 
 def main():
     init_grid()
     print_grid()
-    for i in range(1, 5):
-        time.sleep(0.5)
+    for i in range(1, 40):
+        time.sleep(0.25)
         update_grid()
         print_grid()
     else:
