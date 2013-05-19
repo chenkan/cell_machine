@@ -15,8 +15,8 @@ global grid
 # 可燃物建模
 # hp - 可燃量 每次迭代消耗1点HP 为零时 熄灭
 # fm - 易燃性 取值在1-9 取值为N 则周边只须要有N个已燃烧即引燃
-def get_basic_object(is_fired, hp, fm):
-    return {'is_fired': is_fired, 'hp': hp, 'fm': fm}
+def get_basic_object(name, is_fired, hp, fm):
+    return {'name': name, 'is_fired': is_fired, 'hp': hp, 'fm': fm}
 
 
 # 在终端中执行才会有清屏效果
