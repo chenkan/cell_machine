@@ -19,6 +19,18 @@ def get_basic_object(name, is_fired, hp, fm):
     return {'name': name, 'is_fired': is_fired, 'hp': hp, 'fm': fm}
 
 
+def get_stone():
+    return get_basic_object('stone', False, hp=0, fm=9)
+
+
+def get_wood(is_fired):
+    return get_basic_object('wood', is_fired, hp=10, fm=3)
+
+
+def get_withered_leaf(is_fired):
+    return get_basic_object('leaf', is_fired, hp=3, fm=1)
+
+
 # 在终端中执行才会有清屏效果
 def clear_screen():
     os.system('clear')  # Linux / Mac
