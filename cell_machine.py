@@ -141,14 +141,20 @@ def print_grid():
 
     # has fired - red
     # not fired - green
+    # after fired - white
     for i in range(0, grid_size):
         for j in range(0, grid_size):
-            short_name = grid[i, j]['name'][0].upper()
-            if grid[i, j]['is_fired']:
-                print colored(short_name, 'red'),
+            cell = grid[i, j]
+            short_name = cell['name'][0].upper()
+            if cell['fm'] < 9 and cell['hp'] == 0:
+                print colored(short_name, 'white'),
             else:
-                print colored(short_name, 'green'),
+                if cell['is_fired']:
+                    print colored(short_name, 'red'),
+                else:
+                    print colored(short_name, 'green'),
         print ""
+
     print raw_input('Enter to continue')
 
 
