@@ -57,68 +57,69 @@ def init_grid():
 def update_grid():
     global grid_size, grid
 
-    next_tick_grid = numpy.zeros((grid_size, grid_size))
     for i in range(0, grid_size):
         for j in range(0, grid_size):
-            next_tick_grid[i, j] = get_cell_new_status(i, j)
-    grid = next_tick_grid
+            update_cell(i, j)
 
 
-def get_cell_new_status(i, j):
-    neighbor_alive_num = calculate_neighbor_alive_num(i, j)
-    if grid[i, j] == 1 and (neighbor_alive_num == 2 or neighbor_alive_num == 3):
-        return 1
-    if grid[i, j] == 0 and (neighbor_alive_num == 3):
-        return 1
-    return 0
+def update_cell(i, j):
+    cell = grid[i, j]
+    neighbor_fired_num = calculate_neighbor_fired_num(i, j)
+    if cell['is_fired']:
+        if cell['hp'] == 1:
+            cell['is_fired'] = False
+        cell['hp'] -= 1
+    else:
+        if neighbor_fired_num >= cell['fm'] and cell['hp'] > 0:
+            cell['is_fired'] = True
 
 
 # Grid Notation
 # 1 2 3
 # 8 X 4
 # 7 6 5
-def calculate_neighbor_alive_num(i, j):
+def calculate_neighbor_fired_num(i, j):
     global grid_size, grid
 
     if i == 0 or j == 0:
         neighbor_1 = 0
     else:
-        neighbor_1 = grid[i - 1, j - 1]
+        neighbor_1 = 1 if grid[i - 1, j - 1]['is_fired'] else 0
 
     if i == 0:
         neighbor_2 = 0
     else:
-        neighbor_2 = grid[i - 1, j]
+        neighbor_2 = 1 if grid[i - 1, j]['is_fired'] else 0
 
     if i == 0 or j == grid_size - 1:
         neighbor_3 = 0
     else:
-        neighbor_3 = grid[i - 1, j + 1]
+        neighbor_3 = 1 if grid[i - 1, j + 1]['is_fired'] else 0
 
     if j == grid_size - 1:
         neighbor_4 = 0
     else:
-        neighbor_4 = grid[i, j + 1]
+        neighbor_4 = 1 if grid[i, j + 1]['is_fired'] else 0
 
     if i == grid_size - 1 or j == grid_size - 1:
         neighbor_5 = 0
     else:
-        neighbor_5 = grid[i + 1, j + 1]
+        neighbor_5 = 1 if grid[i + 1, j + 1]['is_fired'] else 0
 
     if i == grid_size - 1:
         neighbor_6 = 0
     else:
-        neighbor_6 = grid[i + 1, j]
+        neighbor_6 = 1 if grid[i + 1, j]['is_fired'] else 0
 
     if i == grid_size - 1 or j == 0:
         neighbor_7 = 0
     else:
-        neighbor_7 = grid[i + 1, j - 1]
+        neighbor_7 = 1 if grid[i + 1, j - 1]['is_fired'] else 0
 
     if j == 0:
         neighbor_8 = 0
     else:
-        neighbor_8 = grid[i, j - 1]
+        neighbor_8 = 1 if grid[i, j - 1]['is_fired'] else 0
 
     return neighbor_1 + neighbor_2 + neighbor_3 + neighbor_4 + neighbor_5 + neighbor_6 + neighbor_7 + neighbor_8
 
@@ -137,13 +138,14 @@ def print_grid():
             else:
                 print colored(short_name, 'green'),
         print ""
+    print raw_input('Enter to continue')
 
 
 def main():
     init_grid()
     print_grid()
-    for i in range(1, 100):
-        time.sleep(0.1)
+    for i in range(1, 20):
+#       time.sleep(1)
         update_grid()
         print_grid()
     else:
