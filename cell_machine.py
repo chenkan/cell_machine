@@ -57,21 +57,32 @@ def init_grid():
 def update_grid():
     global grid_size, grid
 
+    # noinspection PyUnusedLocal
+    next_grid = numpy.array([[{} for i in range(grid_size)] for j in range(grid_size)], dtype=object)
     for i in range(0, grid_size):
         for j in range(0, grid_size):
-            update_cell(i, j)
+            next_grid[i, j] = update_cell(i, j)
+
+    grid = next_grid
 
 
 def update_cell(i, j):
     cell = grid[i, j]
+    name = cell['name']
+    is_fired = cell['is_fired']
+    hp = cell['hp']
+    fm = cell['fm']
+
     neighbor_fired_num = calculate_neighbor_fired_num(i, j)
-    if cell['is_fired']:
-        if cell['hp'] == 1:
-            cell['is_fired'] = False
-        cell['hp'] -= 1
+    if is_fired:
+        if hp == 1:
+            is_fired = False
+        hp -= 1
     else:
-        if neighbor_fired_num >= cell['fm'] and cell['hp'] > 0:
-            cell['is_fired'] = True
+        if neighbor_fired_num >= fm and hp > 0:
+            is_fired = True
+
+    return get_basic_object(name, is_fired, hp, fm)
 
 
 # Grid Notation
