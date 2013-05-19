@@ -6,7 +6,7 @@ import numpy
 import time
 import os
 from termcolor import colored
-
+from random import randint
 
 global grid_size
 global grid
@@ -37,18 +37,21 @@ def clear_screen():
 #   os.system('cls')    # Windows
 
 
-# 0 - dead
-# 1 - alive
+# The forest to be fired
 def init_grid():
     global grid_size, grid
+    grid_size = 11
 
-    grid_size = 25
-    grid = numpy.zeros((grid_size, grid_size))
-    grid[2, 3] = 1  # 爬行模式
-    grid[4, 2] = 1
-    grid[3, 3] = 1
-    grid[3, 2] = 1
-    grid[2, 1] = 1
+    # noinspection PyUnusedLocal
+    grid = numpy.array([[get_withered_leaf(False) for i in range(grid_size)] for j in range(grid_size)], dtype=object)
+    # setup stone
+    for i in range(10):
+        grid[randint(0, grid_size - 1), randint(0, grid_size - 1)] = get_stone()
+    # setup wood
+    for i in range(20):
+        grid[randint(0, grid_size - 1), randint(0, grid_size - 1)] = get_wood(False)
+    # setup fire seed
+    grid[5, 5] = get_withered_leaf(True)
 
 
 def update_grid():
@@ -124,12 +127,15 @@ def print_grid():
     global grid_size, grid
     clear_screen()
 
+    # has fired - red
+    # not fired - green
     for i in range(0, grid_size):
         for j in range(0, grid_size):
-            if grid[i, j] == 1:
-                print colored('x', 'red'),
+            short_name = grid[i, j]['name'][0].upper()
+            if grid[i, j]['is_fired']:
+                print colored(short_name, 'red'),
             else:
-                print colored('.', 'white'),
+                print colored(short_name, 'green'),
         print ""
 
 
